@@ -12,4 +12,4 @@ const multiplyDigits = (number) => {
 const result = multiplyDigits(num);
 console.log(`Произведение цифр числа ${num}: ${result}`);
 console.log(`Возведение в степень 3: ${result ** 3}`);
-
+console.log(`Первые две цифры полученного числа: ${String(result ** 3).slice(0, 2)}`);
