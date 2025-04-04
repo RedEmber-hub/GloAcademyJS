@@ -11,3 +11,5 @@ const multiplyDigits = (number) => {
 
 const result = multiplyDigits(num);
 console.log(`Произведение цифр числа ${num}: ${result}`);
+console.log(`Возведение в степень 3: ${result ** 3}`);
+
