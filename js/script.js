@@ -17,15 +17,18 @@ servicePercentPrice = Math.ceil(servicePercentPrice); //округляем це�
 
 console.log('Как дела?');
 
-if (fullPrice > 30000) {
-    console.log('Даем скидку в 10%');
-} else if (15000 < fullPrice && fullPrice <= 30000) {
-    console.log('Даем скидку в 5%');
-} else if (0 < fullPrice && fullPrice <= 15000) {
-    console.log('Скидка не предусмотрена');
-} else if (fullPrice <= 0) {
-    console.log('Что то пошло не так');
+const getRollbackMessage = (price) => {
+    if (price > 30000) {
+        return 'Даем скидку в 10%';
+    } else if (15000 < price && price <= 30000) {
+        return 'Даем скидку в 5%';
+    } else if (0 < price && price <= 15000) {
+        return 'Скидка не предусмотрена';
+    } else if (price <= 0) {
+        return 'Что то пошло не так';
+    }
 }
+console.log(getRollbackMessage(fullPrice));
 
 console.log(`Стоимость верстки экранов ${screenPrice} рублей`);
 console.log(`Стоимость разработки сайта ${fullPrice} рублей`);
