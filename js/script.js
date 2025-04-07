@@ -17,28 +17,24 @@ servicePercentPrice = Math.ceil(servicePercentPrice); //округляем це�
 
 console.log('Как дела?');
 
-switch (true) {
-    case (fullPrice > 30000):
-        console.log('Даем скидку в 10%');
-        break;
-    case (15000 < fullPrice <= 30000):
-        console.log('Даем скидку в 5%');
-        break;
-    case (0 < fullPrice <= 15000):
-        console.log('Скидка не предусмотрена');
-        break;
-    case (fullPrice <= 0):
-        console.log('Что то пошло не так');
-        break;
+if (fullPrice > 30000) {
+    console.log('Даем скидку в 10%');
+} else if (15000 < fullPrice && fullPrice <= 30000) {
+    console.log('Даем скидку в 5%');
+} else if (0 < fullPrice && fullPrice <= 15000) {
+    console.log('Скидка не предусмотрена');
+} else if (fullPrice <= 0) {
+    console.log('Что то пошло не так');
 }
 
-console.log(typeof title, typeof fullPrice, typeof adaptive);
-console.log(screens.length);
 console.log(`Стоимость верстки экранов ${screenPrice} рублей`);
 console.log(`Стоимость разработки сайта ${fullPrice} рублей`);
-console.log(screens.toLowerCase().split(" "));
 console.log(`Процент отката посреднику за работу ${fullPrice * (rollback / 100)}`);
 console.log(`Стоимость за вычетом отката посредника ${servicePercentPrice} рублей`);
+console.log(`Тип данных title: ${typeof title}, тип данных fullPrice: ${typeof fullPrice}, тип данных adaptive: ${typeof adaptive}`);
+console.log(`Длина строки переменной screens: ${screens.length}`);
+console.log(`Массив строки: ${screens.toLowerCase().split(" ")}`);
+
 
 
 
