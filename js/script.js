@@ -27,15 +27,11 @@ const getTitle = () => {
 }
 
 const getRollbackMessage = (price) => {
-    if (price > 30000) {
-        return 'Даем скидку в 10%';
-    } else if (15000 < price && price <= 30000) {
-        return 'Даем скидку в 5%';
-    } else if (0 < price && price <= 15000) {
-        return 'Скидка не предусмотрена';
-    } else if (price <= 0) {
-        return 'Что то пошло не так';
-    }
+    if (price <= 30000) return 'Даем скидку в 5%';
+    if (price <= 15000) return 'Скидка не предусмотрена';
+    if (price <= 0) return 'Что то пошло не так';
+
+    return 'Даем скидку в 10%';
 }
 
 //Функция возвращает итоговую стоимость за вычетом процента отката/цена со скидкой
