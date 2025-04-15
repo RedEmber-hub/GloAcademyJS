@@ -2,26 +2,50 @@ alert('Привет, рада тебя видеть!');
 
 const appData = {
     title: '',
-    screens: '',
+    screens: [],
     screenPrice: 0,
     adaptiv: true,
     rollback: 10,
     allServicePrices: 0,
     fullPrice: 0,
     servicePercentPrice: 0,
-    service1: '',
-    service2: '',
-
+    services: {},
 
     asking: () => {
+        let servicePrice;
         appData.title = prompt('Как называется ваш проект?', 'Калькулятор вёрстки');
-        appData.screens = prompt('Какие типы экранов нужно разработать?', 'Простые сложные');
 
-        do {
-            appData.screenPrice = parseFloat(prompt('Сколько будет стоить данная работа?'));
-        } while (!appData.isNumber(appData.screenPrice))
+        for (let i = 0; i < 2; i++) {
+            let name = prompt('Какие типы экранов нужно разработать?');
+            let price = 0;
+
+            do {
+                price = parseFloat(prompt('Сколько будет стоить данная работа?'));
+            } while (!appData.isNumber(appData.screenPrice))
+
+            appData.screens.push({ id: i, name: name, price: price })
+        }
+
+        for (let i = 0; i < 2; i++) {
+            let name = prompt('Какой дополнительный тип услуги нужен?');
+
+            do {
+                servicePrice = prompt('Сколько это будет стоить?');
+            } while (!appData.isNumber(servicePrice));  // проверяем, является ли введенная стоимость числом
+
+            appData.services[name] = parseFloat(servicePrice);
+        }
 
         appData.adaptiv = confirm('Нужен ли адаптив на сайте?');
+    },
+
+    addPrices: () => {
+        for (let screenPrice of appData.screens) {
+            appData.screenPrice += +screenPrice;
+        }
+        for (let key in appData.services) {
+            appData.allServicePrices += appData.services[key];
+        }
     },
 
     //ф-ция проверки на число
@@ -29,36 +53,14 @@ const appData = {
         return !isNaN(parseFloat(num)) && isFinite(num);
     },
 
-
-    getAllServicePrices: () => {
-        let sum = 0;
-        let servicePrice;
-
-        for (let i = 0; i < 2; i++) {
-            if (i === 0) {
-                appData.service1 = prompt('Какой дополнительный тип услуги нужен?');
-            } else if (i === 1) {
-                appData.service2 = prompt('Какой дополнительный тип услуги нужен?');
-            }
-
-            do {
-                servicePrice = prompt('Сколько это будет стоить?');
-            } while (!appData.isNumber(servicePrice));  // проверяем, является ли введенная стоимость числом
-
-            sum += parseFloat(servicePrice);
-        }
-
-        return sum;
-    },
-
     //функция возвращает общую стоимость(работа + услуги)
     getFullPrice: () => {
-        return appData.screenPrice + appData.allServicePrices;
+        appData.fullPrice = appData.screenPrice + appData.allServicePrices;
     },
 
     // функция возвращает title с заглавной буквы и остальными строчными
     getTitle: () => {
-        return appData.title.trim().charAt(0).toUpperCase() + appData.title.trim().slice(1).toLowerCase();
+        appData.title = appData.title.trim().charAt(0).toUpperCase() + appData.title.trim().slice(1).toLowerCase();
     },
 
     getRollbackMessage: (price) => {
@@ -71,31 +73,30 @@ const appData = {
 
     // функция возвращает стоимость за вычетом отката (со скидкой)
     getServicePercentPrices: () => {
-        return (appData.fullPrice - (appData.fullPrice * (appData.rollback / 100)))
+        appData.servicePercentPrice = (appData.fullPrice - (appData.fullPrice * (appData.rollback / 100)))
     },
 
     start: () => {
         appData.asking();
-        appData.allServicePrices = appData.getAllServicePrices(); // вычисляем все дополнительные услуги
-        appData.fullPrice = appData.getFullPrice(); // итоговая стоимость работы
-        appData.servicePercentPrice = appData.getServicePercentPrices(); // цена со скидкой
-        appData.servicePercentPrice = Math.ceil(appData.servicePercentPrice);  // округляем цену в большую сторону
-
+        appData.addPrices();
+        appData.getFullPrice(); // итоговая стоимость работы
+        appData.getServicePercentPrices(); // цена со скидкой
+        appData.getTitle();
 
         appData.logger();
     },
 
     logger: () => {
         console.log('Стоимость всех дополнительных услуг:', appData.allServicePrices);
-
-        console.log(`Массив экранов: ${appData.screens.toLowerCase().split(" ")}`);
         console.log('Скидка:', appData.getRollbackMessage(appData.fullPrice));
         console.log(`Стоимость за вычетом отката посреднику ${appData.servicePercentPrice} рублей`);
+        console.log(appData.screens);
 
-        //выводим все свойства объекта в колнсоль
-        for (let key in appData) {
-            console.log(`${key}: ${appData[key]}`);
-        }
+
+        // //выводим все свойства объекта в колнсоль
+        // for (let key in appData) {
+        //     console.log(`${key}: ${appData[key]}`);
+        // }
     }
 }
 
