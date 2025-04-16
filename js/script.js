@@ -9,11 +9,9 @@ const appData = {
     allServicePrices: 0,
     fullPrice: 0,
     servicePercentPrice: 0,
-    services: {},
+    services: [],
 
     asking: () => {
-        let servicePrice;
-
         //название проекта
         do {
             appData.title = prompt('Как называется ваш проект?', 'Калькулятор вёрстки').trim();
@@ -46,7 +44,7 @@ const appData = {
                 servicePrice = prompt('Сколько это будет стоить?').trim();
             } while (!appData.isNumber(servicePrice));  // проверяем, является ли введенная стоимость числом
 
-            appData.services[name] = parseFloat(servicePrice);
+            appData.services.push({ id: i, name: name, servicePrice: parseFloat(servicePrice) })
         }
 
         //адаптив на сайте
@@ -64,16 +62,8 @@ const appData = {
     },
 
     addPrices: () => {
-        appData.screenPrice = 0; // сбрасываем перед пересчётом
-        appData.allServicePrices = 0;
-
-        for (let screen of appData.screens) {
-            appData.screenPrice += screen.price;
-        }
-
-        for (let key in appData.services) {
-            appData.allServicePrices += appData.services[key];
-        }
+        appData.screenPrice = appData.screens.reduce((sum, screen) => sum + screen.price, 0);
+        appData.allServicePrices = appData.services.reduce((sum, service) => sum + service.servicePrice, 0);
     },
 
     //функция возвращает общую стоимость(работа + услуги)
@@ -114,6 +104,7 @@ const appData = {
         console.log('Скидка:', appData.getRollbackMessage(appData.fullPrice));
         console.log(`Стоимость за вычетом отката посреднику ${appData.servicePercentPrice} рублей`);
         console.log(appData.screens);
+        console.log(appData.services);
 
         // //выводим все свойства объекта в колнсоль
         // for (let key in appData) {
