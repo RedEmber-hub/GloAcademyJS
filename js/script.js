@@ -64,9 +64,13 @@ const appData = {
     },
 
     addPrices: () => {
-        for (let screenPrice of appData.screens) {
-            appData.screenPrice += +screenPrice;
+        appData.screenPrice = 0; // сбрасываем перед пересчётом
+        appData.allServicePrices = 0;
+
+        for (let screen of appData.screens) {
+            appData.screenPrice += screen.price;
         }
+
         for (let key in appData.services) {
             appData.allServicePrices += appData.services[key];
         }
@@ -110,7 +114,6 @@ const appData = {
         console.log('Скидка:', appData.getRollbackMessage(appData.fullPrice));
         console.log(`Стоимость за вычетом отката посреднику ${appData.servicePercentPrice} рублей`);
         console.log(appData.screens);
-
 
         // //выводим все свойства объекта в колнсоль
         // for (let key in appData) {
