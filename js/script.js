@@ -13,30 +13,54 @@ const appData = {
 
     asking: () => {
         let servicePrice;
-        appData.title = prompt('Как называется ваш проект?', 'Калькулятор вёрстки');
 
+        //название проекта
+        do {
+            appData.title = prompt('Как называется ваш проект?', 'Калькулятор вёрстки').trim();
+        } while (!appData.isText(appData.title));
+
+        //данные по экрану
         for (let i = 0; i < 2; i++) {
-            let name = prompt('Какие типы экранов нужно разработать?');
-            let price = 0;
+            let price, name;
 
             do {
-                price = parseFloat(prompt('Сколько будет стоить данная работа?'));
-            } while (!appData.isNumber(appData.screenPrice))
+                name = prompt('Какие типы экранов нужно разработать?').trim();
+            } while (!appData.isText(name));
+
+            do {
+                price = parseFloat(prompt('Сколько будет стоить данная работа?').trim());
+            } while (!appData.isNumber(price))
 
             appData.screens.push({ id: i, name: name, price: price })
         }
 
+        //дополнительные услуги
         for (let i = 0; i < 2; i++) {
-            let name = prompt('Какой дополнительный тип услуги нужен?');
+            let name, servicePrice;
 
             do {
-                servicePrice = prompt('Сколько это будет стоить?');
+                name = prompt('Какой дополнительный тип услуги нужен?').trim();
+            } while (!appData.isText(name));
+
+            do {
+                servicePrice = prompt('Сколько это будет стоить?').trim();
             } while (!appData.isNumber(servicePrice));  // проверяем, является ли введенная стоимость числом
 
             appData.services[name] = parseFloat(servicePrice);
         }
 
+        //адаптив на сайте
         appData.adaptiv = confirm('Нужен ли адаптив на сайте?');
+    },
+
+    //проверка на наличие хотя бы одной буквы в строке
+    isText: (str) => {
+        return typeof str === 'string' && str.trim() !== '' && /[a-zA-Zа-яА-Я]/.test(str);
+    },
+
+    //ф-ция проверки на число
+    isNumber: (num) => {
+        return !isNaN(parseFloat(num)) && isFinite(num) && /^[0-9]+(\.[0-9]+)?$/.test(num);;
     },
 
     addPrices: () => {
@@ -46,11 +70,6 @@ const appData = {
         for (let key in appData.services) {
             appData.allServicePrices += appData.services[key];
         }
-    },
-
-    //ф-ция проверки на число
-    isNumber: (num) => {
-        return !isNaN(parseFloat(num)) && isFinite(num);
     },
 
     //функция возвращает общую стоимость(работа + услуги)
